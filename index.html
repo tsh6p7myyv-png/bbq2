@@ -29,9 +29,9 @@
     <div class="tabs">
         <div class="tab active" onclick="openTab(event, 'menu1')">歸樸火鍋</div>
         <div class="tab" onclick="openTab(event, 'menu2')">歸樸烤肉</div>
-        <div class="tab" onclick="openTab(event, 'menuA')">北埔烤肉</div>
-        <div class="tab" onclick="openTab(event, 'menuB')">北埔火鍋</div>
-        <div class="tab" onclick="openTab(event, 'menuC')">自定義 C</div>
+        <div class="tab" onclick="event, openTab(event, 'menuA')">北埔烤肉</div>
+        <div class="tab" onclick="event, openTab(event, 'menuB')">北埔火鍋</div>
+        <div class="tab" onclick="event, openTab(event, 'menuC')">自定義 C</div>
     </div>
 
     <div id="menu1" class="content active">
@@ -101,7 +101,6 @@ function showResult(resId, listId, s, order) {
     if(!hasData) alert("請輸入數量！");
 }
 
-// 歸樸火鍋
 function calculateM1() {
     const v1 = parseInt(document.getElementById('m1_1').value) || 0;
     const v2 = parseInt(document.getElementById('m1_2').value) || 0;
@@ -115,7 +114,7 @@ function calculateM1() {
     showResult('res1', 'list1', s, order);
 }
 
-// 歸樸烤肉
+// 歸樸烤肉 (更新 2人牛豬 邏輯)
 function calculateM2() {
     const v1 = parseInt(document.getElementById('m2_1').value) || 0;
     const v2 = parseInt(document.getElementById('m2_2').value) || 0;
@@ -123,15 +122,22 @@ function calculateM2() {
     const v4 = parseInt(document.getElementById('m2_4').value) || 0;
     const s = {};
     const add = (n, q) => s[n] = (s[n] || 0) + q;
-    const order = ["豬嫩肩300g", "豬嫩肩500g", "美國板腱+豬嫩肩300g", "美國板腱400g", "豬五花500g", "松阪豬150g", "松阪豬300g", "依比例豬肋條100g", "依比例豬肋條200g", "牛肋條150g", "牛肋條250g", "普羅旺斯雞腿500g", "海鮮盤", "明蝦", "吐司"];
+
+    const order = [
+        "豬嫩肩300g", "豬嫩肩500g", "美國板腱+豬嫩肩300g", "美國板腱400g", 
+        "豬五花500g", "松阪豬150g", "松阪豬150g+牛肋條150g", "松阪豬300g", "依比例豬肋條100g", 
+        "依比例豬肋條200g", "牛肋條150g", "牛肋條250g", "普羅旺斯雞腿500g", 
+        "海鮮盤", "明蝦", "吐司"
+    ];
+
     if(v1 > 0) { add("豬嫩肩300g", v1); add("松阪豬150g", v1); add("依比例豬肋條100g", v1); add("普羅旺斯雞腿500g", v1); add("海鮮盤", v1); add("吐司", v1); }
-    if(v2 > 0) { add("美國板腱+豬嫩肩300g", v2); add("松阪豬150g", v2); add("牛肋條150g", v2); add("普羅旺斯雞腿500g", v2); add("海鮮盤", v2); add("吐司", v2); }
+    // 2人牛豬修改處
+    if(v2 > 0) { add("美國板腱+豬嫩肩300g", v2); add("松阪豬150g+牛肋條150g", v2); add("普羅旺斯雞腿500g", v2); add("海鮮盤", v2); add("吐司", v2); }
     if(v3 > 0) { add("豬嫩肩500g", v3); add("豬五花500g", v3); add("松阪豬300g", v3); add("依比例豬肋條200g", v3); add("普羅旺斯雞腿500g", v3); add("海鮮盤", v3); add("明蝦", v3); add("吐司", v3); }
     if(v4 > 0) { add("豬嫩肩500g", v4); add("美國板腱400g", v4); add("松阪豬300g", v4); add("牛肋條250g", v4); add("普羅旺斯雞腿500g", v4); add("海鮮盤", v4); add("明蝦", v4); add("吐司", v4); }
     showResult('res2', 'list2', s, order);
 }
 
-// 北埔烤肉 (MA)
 function calculateMA() {
     const v1 = parseInt(document.getElementById('mA_1').value) || 0;
     const v2 = parseInt(document.getElementById('mA_2').value) || 0;
@@ -147,42 +153,21 @@ function calculateMA() {
     showResult('resA', 'listA', s, order);
 }
 
-// 北埔火鍋 (MB) - 本次修改
 function calculateMB() {
-    const v1 = parseInt(document.getElementById('mB_1').value) || 0; // 2人
-    const v2 = parseInt(document.getElementById('mB_2').value) || 0; // 4人
-    const v3 = parseInt(document.getElementById('mB_3').value) || 0; // 6人
-    const v4 = parseInt(document.getElementById('mB_4').value) || 0; // 10人
+    const v1 = parseInt(document.getElementById('mB_1').value) || 0;
+    const v2 = parseInt(document.getElementById('mB_2').value) || 0;
+    const v3 = parseInt(document.getElementById('mB_3').value) || 0;
+    const v4 = parseInt(document.getElementById('mB_4').value) || 0;
     const s = {};
     const add = (n, q) => s[n] = (s[n] || 0) + q;
-
-    const order = [
-        "牛五花300g", "板腱300g", "翼板300g", "豬嫩肩300g", "火鍋料", 
-        "刻花魷魚300g", "鱸魚片250g", "花枝漿", "10p干貝"
-    ];
-
-    if(v1 > 0) { 
-        add("牛五花300g", v1); add("豬嫩肩300g", v1); add("火鍋料", v1); 
-        add("刻花魷魚300g", v1); add("鱸魚片250g", v1); 
-    }
-    if(v2 > 0) { 
-        add("板腱300g", v2); add("豬嫩肩300g", v2 * 2); add("火鍋料", v2); 
-        add("刻花魷魚300g", v2); add("鱸魚片250g", v2); add("花枝漿", v2); 
-    }
-    if(v3 > 0) { 
-        add("翼板300g", v3 * 2); add("豬嫩肩300g", v3 * 2); add("火鍋料", v3); 
-        add("刻花魷魚300g", v3 * 2); add("鱸魚片250g", v3); add("花枝漿", v3); 
-    }
-    if(v4 > 0) { 
-        add("翼板300g", v4 * 2); add("豬嫩肩300g", v4 * 3); add("火鍋料", v4 * 2); 
-        add("刻花魷魚300g", v4 * 2); add("鱸魚片250g", v4 * 2); add("花枝漿", v4 * 2); 
-        add("10p干貝", v4); 
-    }
-    
+    const order = ["牛五花300g", "板腱300g", "翼板300g", "豬嫩肩300g", "火鍋料", "刻花魷魚300g", "鱸魚片250g", "花枝漿", "10p干貝"];
+    if(v1 > 0) { add("牛五花300g", v1); add("豬嫩肩300g", v1); add("火鍋料", v1); add("刻花魷魚300g", v1); add("鱸魚片250g", v1); }
+    if(v2 > 0) { add("板腱300g", v2); add("豬嫩肩300g", v2 * 2); add("火鍋料", v2); add("刻花魷魚300g", v2); add("鱸魚片250g", v2); add("花枝漿", v2); }
+    if(v3 > 0) { add("翼板300g", v3 * 2); add("豬嫩肩300g", v3 * 2); add("火鍋料", v3); add("刻花魷魚300g", v3 * 2); add("鱸魚片250g", v3); add("花枝漿", v3); }
+    if(v4 > 0) { add("翼板300g", v4 * 2); add("豬嫩肩300g", v4 * 3); add("火鍋料", v4 * 2); add("刻花魷魚300g", v4 * 2); add("鱸魚片250g", v4 * 2); add("花枝漿", v4 * 2); add("10p干貝", v4); }
     showResult('resB', 'listB', s, order);
 }
 
-// 預留自定義 C
 function calculateMC() {
     const v1 = parseInt(document.getElementById('mC_1').value) || 0;
     const s = {"節慶活動組 01": v1};
